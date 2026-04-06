@@ -1,0 +1,16 @@
+[Unit]
+Description=OAuth-Coder Bridge for OpenClaw
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 %h/.openclaw/scripts/oauth-coder-bridge.py
+Restart=always
+RestartSec=5
+Environment="HOME=%h"
+Environment="PATH=%h/bin:/usr/local/bin:/usr/bin:/bin"
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
