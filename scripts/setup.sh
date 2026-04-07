@@ -14,7 +14,7 @@ chmod +x ~/.openclaw/scripts/oauth-coder-bridge.py
 
 echo "Installed: ~/.openclaw/scripts/oauth-coder-bridge.py"
 
-# Update OpenClaw config
+# Update OpenClaw config (adds claude-cli provider)
 python3 "$SCRIPT_DIR/update-openclaw-config.py"
 
 echo ""

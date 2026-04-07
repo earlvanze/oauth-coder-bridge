@@ -25,7 +25,7 @@ BIND_HOST = os.environ.get("OAUTH_CODER_BRIDGE_HOST", "127.0.0.1")
 MAX_REQUEST_SIZE = int(os.environ.get("OAUTH_CODER_BRIDGE_MAX_SIZE", 1024 * 1024))  # 1MB
 REQUEST_TIMEOUT = int(os.environ.get("OAUTH_CODER_BRIDGE_TIMEOUT", 300))  # 5 minutes
 MAX_PROMPT_LENGTH = int(os.environ.get("OAUTH_CODER_BRIDGE_MAX_PROMPT", 100000))  # 100KB
-OAUTH_CODER_BIN = os.environ.get("OAUTH_CODER_BIN", "/home/umbrel/bin/oauth-coder")
+OAUTH_CODER_BIN = os.environ.get("OAUTH_CODER_BIN", str(Path.home() / "bin" / "oauth-coder"))
 LOG_LEVEL = os.environ.get("OAUTH_CODER_BRIDGE_LOG_LEVEL", "INFO")
 LOG_FILE = os.environ.get("OAUTH_CODER_BRIDGE_LOG_FILE", "")
 
