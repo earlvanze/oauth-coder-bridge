@@ -232,10 +232,16 @@ class ClaudeBridgeHandler(BaseHTTPRequestHandler):
         # Map model names
         model_map = {
             "claude-opus-4-6": "opus",
+            "claude-opus-4-5": "opus",
+            "claude-opus-4-1": "opus",
+            "claude-opus-4-0": "opus",
             "claude-sonnet-4-6": "sonnet",
             "claude-sonnet-4-5": "sonnet",
+            "claude-sonnet-4-0": "sonnet",
             "claude-haiku-4-5": "haiku",
             "claude-3-7-sonnet-latest": "sonnet",
+            "claude-3-5-sonnet-latest": "sonnet",
+            "claude-3-5-haiku-latest": "haiku",
         }
         claude_model = model_map.get(model, "opus")
         

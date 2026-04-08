@@ -7,6 +7,20 @@ from pathlib import Path
 
 CONFIG_PATH = Path.home() / ".openclaw" / "openclaw.json"
 
+MODELS = [
+    {"id": "claude-opus-4-6", "name": "Claude Opus 4.6 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-opus-4-5", "name": "Claude Opus 4.5 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-opus-4-1", "name": "Claude Opus 4.1 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-opus-4-0", "name": "Claude Opus 4.0 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-sonnet-4-6", "name": "Claude Sonnet 4.6 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-sonnet-4-5", "name": "Claude Sonnet 4.5 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-sonnet-4-0", "name": "Claude Sonnet 4.0 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-haiku-4-5", "name": "Claude Haiku 4.5 (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-3-7-sonnet-latest", "name": "Claude 3.7 Sonnet (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-3-5-sonnet-latest", "name": "Claude 3.5 Sonnet (claude-cli)", "contextWindow": 200000},
+    {"id": "claude-3-5-haiku-latest", "name": "Claude 3.5 Haiku (claude-cli)", "contextWindow": 200000},
+]
+
 def main():
     if not CONFIG_PATH.exists():
         print(f"Error: {CONFIG_PATH} not found", file=sys.stderr)
@@ -15,58 +29,31 @@ def main():
     with open(CONFIG_PATH, "r") as f:
         config = json.load(f)
 
-    # Ensure models.providers exists
-    if "models" not in config:
-        config["models"] = {}
-    if "providers" not in config["models"]:
-        config["models"]["providers"] = {}
+    config.setdefault("models", {}).setdefault("providers", {})
 
-    # Add claude-cli provider (uses oauth-coder bridge on localhost:8787)
     config["models"]["providers"]["claude-cli"] = {
         "baseUrl": "http://127.0.0.1:8787",
         "apiKey": "local-bridge-no-key-needed",
         "api": "anthropic-messages",
         "models": [
             {
-                "id": "claude-opus-4-6",
-                "name": "Claude Opus 4.6 (claude-cli)",
+                "id": m["id"],
+                "name": m["name"],
                 "reasoning": True,
                 "input": ["text"],
                 "cost": {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0},
-                "contextWindow": 200000,
-                "maxTokens": 8192
-            },
-            {
-                "id": "claude-sonnet-4-6",
-                "name": "Claude Sonnet 4.6 (claude-cli)",
-                "reasoning": True,
-                "input": ["text"],
-                "cost": {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0},
-                "contextWindow": 200000,
-                "maxTokens": 8192
-            },
-            {
-                "id": "claude-sonnet-4-5",
-                "name": "Claude Sonnet 4.5 (claude-cli)",
-                "reasoning": True,
-                "input": ["text"],
-                "cost": {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0},
-                "contextWindow": 200000,
-                "maxTokens": 8192
+                "contextWindow": m["contextWindow"],
+                "maxTokens": 8192,
             }
-        ]
+            for m in MODELS
+        ],
     }
 
-    # Write updated config
     with open(CONFIG_PATH, "w") as f:
         json.dump(config, f, indent=2)
 
     print(f"Updated {CONFIG_PATH}")
-    print("Added claude-cli provider with models:")
-    print("  - claude-cli/claude-opus-4-6")
-    print("  - claude-cli/claude-sonnet-4-6")
-    print("  - claude-cli/claude-sonnet-4-5")
-    print("\nStart the bridge with: python3 ~/.openclaw/scripts/oauth-coder-bridge.py")
+    print(f"Added claude-cli provider with {len(MODELS)} models")
 
 if __name__ == "__main__":
     main()

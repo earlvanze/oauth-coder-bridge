@@ -33,9 +33,11 @@ openclaw models set claude-cli/claude-opus-4-6  # or full path
 
 ## Models
 
-- `claude-cli/claude-opus-4-6`
-- `claude-cli/claude-sonnet-4-6`
-- `claude-cli/claude-sonnet-4-5`
+**Opus:** `claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`, `claude-opus-4-0`
+**Sonnet:** `claude-sonnet-4-6`, `claude-sonnet-4-5`, `claude-sonnet-4-0`, `claude-3-7-sonnet-latest`, `claude-3-5-sonnet-latest`
+**Haiku:** `claude-haiku-4-5`, `claude-3-5-haiku-latest`
+
+All prefixed with `claude-cli/` (e.g. `claude-cli/claude-opus-4-6`).
 
 ## How It Works
 
