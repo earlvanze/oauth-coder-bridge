@@ -1,10 +1,24 @@
 ---
 name: oauth-coder-bridge
-description: Routes OpenClaw Anthropic API calls through oauth-coder (Claude CLI with OAuth), no API key needed.
+description: Routes OpenClaw Anthropic API calls through oauth-coder (Claude CLI with OAuth), no API key needed. Superseded by Dario (port 3456) as primary provider.
 homepage: https://github.com/earlvanze/oauth-coder-bridge
 ---
 
 # oauth-coder-bridge
+
+**⚠️ DEPRECATED:** Dario (`dario proxy --cli`) is now the primary Claude CLI provider for OpenClaw.
+
+**Use Dario instead:**
+```bash
+# Dario runs on port 3456 with --bypassPermissions by default
+systemctl --user status dario.service
+```
+
+**oauth-coder-bridge** remains available as a fallback option.
+
+---
+
+## Overview
 
 Local HTTP bridge: OpenClaw → oauth-coder → real `claude` CLI (OAuth tokens, no API key).
 
@@ -14,6 +28,7 @@ Local HTTP bridge: OpenClaw → oauth-coder → real `claude` CLI (OAuth tokens,
 
 - `oauth-coder` installed and authenticated (`claude login`)
 - Binary on PATH or set `OAUTH_CODER_BIN`
+- **Note:** oauth-coder now uses `--bypassPermissions` by default for automated tool calls
 
 ## Install & Run
 
@@ -42,7 +57,7 @@ All prefixed with `claude-cli/` (e.g. `claude-cli/claude-opus-4-6`).
 ## How It Works
 
 ```
-OpenClaw → HTTP :8787 → oauth-coder-bridge → oauth-coder → claude CLI
+OpenClaw → HTTP :8787 → oauth-coder-bridge → oauth-coder → claude CLI (--bypassPermissions)
 ```
 
 Bridge translates Anthropic-messages JSON → `oauth-coder ask claude ...` subprocess calls.
@@ -63,6 +78,7 @@ Bridge translates Anthropic-messages JSON → `oauth-coder ask claude ...` subpr
 - Binds localhost only
 - Rate limited: 30 req/min per IP
 - Prompts pass through to `claude` CLI subprocess
+- oauth-coder uses `--bypassPermissions` by default (safe for local workflows)
 - If `LOG_FILE` is set, prompts/responses may be logged locally
 
 ## Troubleshooting
@@ -72,6 +88,19 @@ curl http://127.0.0.1:8787/health    # check bridge
 which oauth-coder                     # check binary
 claude login                          # re-auth
 oauth-coder stop-all                  # clear stuck sessions
+```
+
+## Migration to Dario
+
+Dario provides the same functionality with better maintenance:
+
+```bash
+# Dario is already installed and running
+systemctl --user status dario.service
+
+# Dario uses port 3456 (vs oauth-coder-bridge port 8787)
+# Dario has --bypassPermissions enabled by default
+# Dario is actively maintained upstream
 ```
 
 ## Files
